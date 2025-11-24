@@ -14,7 +14,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(); // uses spring.redis.* properties from application.yml
+        return new LettuceConnectionFactory(); // uses spring.redis.* properties from application.properties
     }
 
     @Bean

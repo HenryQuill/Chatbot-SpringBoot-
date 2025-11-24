@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { authAxios, getCurrentUser } from '../services/authService';
-import { FaPaperPlane } from 'react-icons/fa';
+import { authAxios, getCurrentUser ,logout } from '../services/authService';
+import { FaPaperPlane, FaSignOutAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import '../assets/css/chatbot.css';
 
 const Chatbot = () => {
@@ -8,6 +9,7 @@ const Chatbot = () => {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false)
     const [authUser, setAuthUser] = useState(null);
+    const navigate = useNavigate();
 
     // Load logged-in user on component mount
     useEffect(() => {
@@ -15,8 +17,15 @@ const Chatbot = () => {
         if (user) {
             setAuthUser(user);
             fetchChatHistory(user.userId);
+        }else {
+            navigate('/'); // redirect to login if no user
         }
-    }, []);
+    }, [navigate]);
+
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    };
 
     const fetchChatHistory = async (userId) => {
         try {
@@ -73,6 +82,21 @@ const Chatbot = () => {
             <div className="chat-header">
                 <img src="/images/logo.png" alt="Chatbot Logo" className="chat-logo" />
                 <div className="breadcrumb">CHATBOT</div>
+
+                <button 
+                    onClick={handleLogout} 
+                    style={{
+                        backgroundColor: '#ff4d4d', 
+                        width: 'auto', 
+                        padding: '8px 15px',
+                        display: 'flex',
+                        gap: '8px',
+                        alignItems: 'center',
+                        fontSize: '14px'
+                    }}
+                >
+                    <FaSignOutAlt/> Logout
+                </button>
             </div>
 
             <div className="chatbox">

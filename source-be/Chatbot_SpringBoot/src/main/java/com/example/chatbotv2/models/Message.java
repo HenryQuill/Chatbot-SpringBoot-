@@ -21,7 +21,7 @@ public class Message {
     private User user;
 
     @Column(name = "sender", nullable = false)
-    private String sender; // 'user' or 'bot'
+    private String sender; // 'user' or 'ai'
 
     @Column(name = "messageText", columnDefinition = "TEXT", nullable = false)
     private String messageText;

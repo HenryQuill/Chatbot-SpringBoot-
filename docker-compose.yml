@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # 1. Backend
+  backend:
+    build: ./source-be/Chatbot_SpringBoot
+    container_name: chatbot-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/chatbot_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+      - SPRING_AI_OPENAI_API_KEY=${GOOGLE_KEY}
+      - CHATBOT_APP_JWTSECRET=EnterYourSecretKeyHere
+      - CHATBOT_APP_JWTEXPIRATION=86400000
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app-network
+
+  # 2. Frontend
+  frontend:
+    build: ./source-fe/chatbot-ui
+    container_name: chatbot-frontend
+    ports:
+      - "3000:80" # map port 80 in the container to port 3000 on the host
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  # 3. PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: chatbot-db
+    environment:
+      - POSTGRES_DB=chatbot_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # 4. Redis
+  redis:
+    image: redis:alpine
+    container_name: chatbot-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

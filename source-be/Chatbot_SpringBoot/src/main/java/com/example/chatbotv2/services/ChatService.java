@@ -74,7 +74,7 @@ public class ChatService {
         return botReply;
     }
 
-    // Hàm lấy lịch sử cho Controller gọi
+    // get chat history
     public List<CacheMessageDTO> getHistory(Long userId) {
         // for now
         return chatCacheService.getChatHistory(userId);

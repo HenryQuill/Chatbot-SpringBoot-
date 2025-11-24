@@ -34,6 +34,7 @@ build/
 apikeys.properties
 databases.properties
 jwt.properties
+.env
 
 ### VS Code ###
 .vscode/

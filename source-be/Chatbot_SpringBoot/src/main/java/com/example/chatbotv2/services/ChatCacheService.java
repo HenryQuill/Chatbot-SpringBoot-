@@ -3,14 +3,12 @@ package com.example.chatbotv2.services;
 import com.example.chatbotv2.dto.CacheMessageDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.Nullable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ChatCacheService {
@@ -49,15 +47,20 @@ public class ChatCacheService {
 
     public List<CacheMessageDTO> getChatHistory(Long userId) {
         List<String> jsonList = redisTemplate.opsForList().range(getRedisKey(userId), 0, -1);
-        if (jsonList == null) return new ArrayList<>();
 
-        return jsonList.stream().map(json -> {
-            try {
-                return objectMapper.readValue(json, CacheMessageDTO.class);
-            } catch (JsonProcessingException e) {
-                return null;
-            }
-        }).collect(Collectors.toList());
+        // List.of() returns immutable empty list (same return type)
+        if (jsonList == null) return List.of();
+
+        return jsonList.stream()
+                .map(json -> {
+                    try {
+                        return objectMapper.readValue(json, CacheMessageDTO.class);
+                    } catch (JsonProcessingException e) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull) // Filter null elements if parse fails to avoid client side NullPointerException
+                .toList();
     }
-
 }
+
