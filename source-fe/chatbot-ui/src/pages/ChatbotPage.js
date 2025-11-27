@@ -131,6 +131,8 @@ const Chatbot = () => {
                     <FaPaperPlane />
                 </button>
             </div>
+
+        
         </div>
     );
 };

@@ -54,10 +54,10 @@ const RegisterPage = () => {
         <form className="form-content" onSubmit={handleSubmit}>
           <div className="container">
             <label className="username-label" htmlFor="username-input">Username</label>
-            <input id="username-input" type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} required minLength="3" maxLength="20"/>
+            <input id="username-input" type="username" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} required minLength="3" maxLength="20"/>
 
             <label className="email-label" htmlFor="email-input">Email</label>
-            <input id="email-input" type="text" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} required maxLength="50"/>
+            <input id="email-input" type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} required maxLength="50"/>
             
             <label className="password-label" htmlFor="password-input">Password</label>
             <input id="password-input" type="password" placeholder="Enter password" value={password}onChange={(e) => setPassword(e.target.value)} required minLength="6" maxLength="40"/> 
@@ -67,8 +67,8 @@ const RegisterPage = () => {
           {error && <p style={{color: 'red', textAlign: 'center', marginTop: '10px'}}>{error}</p>}
           {message && <p style={{color: 'green', textAlign: 'center', marginTop: '10px'}}>{message}</p>}
 
-          <div className="container" style={{backgroundColor:"#f1f1f1"}}></div>
-          <div className="container" style={{backgroundColor:"#f1f1f1"}}>
+          {/* <div className="container" style={{backgroundColor:"#f1f1f1"}}></div> */}
+          <div className="form-footer-container">
             <button type="button" onClick={handleCancel} className="cancelBtn">Cancel</button>
             <span>Already had an account ? <Link to="/">Login here</Link></span>
           </div>

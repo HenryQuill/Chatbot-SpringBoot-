@@ -49,8 +49,8 @@ const LoginPage = () => {
             <label className="username-label" htmlFor="username-input">Username</label>
             <input 
               id="username-input" 
-              type="text" 
-              placeholder="Enter username" 
+              type="username" 
+              placeholder="Enter Username" 
               value={username} 
               onChange={(e) => setUsername(e.target.value)} 
               required
@@ -68,7 +68,7 @@ const LoginPage = () => {
             <button type="submit">Login</button>
           </div>
           {error && <p style={{color: 'red', textAlign: 'center', marginTop: '10px'}}>{error}</p>}
-          <div className="container" style={{backgroundColor:"#f1f1f1"}}>
+          <div className="form-footer-container">
             <button type="button" onClick={handleCancel} className="cancelBtn">Cancel</button>
             <span>Dont have an account ? <Link to="/register">Register here</Link></span>
           </div>
