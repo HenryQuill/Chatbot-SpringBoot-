@@ -40,6 +40,21 @@ input[type=username], input[type=password], input[type=email] {
   border-radius: 5px;
 }
 
+input.input-error {
+  border-color: #f44336 !important; 
+  background-color: #fff8f8;
+}
+
+.field-error {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: -10px; 
+  margin-bottom: 10px;
+  display: block;
+  padding-left: 10px; 
+  text-align: left;
+}
+
 label {
   font-weight: bold;
   font-size: 14px;

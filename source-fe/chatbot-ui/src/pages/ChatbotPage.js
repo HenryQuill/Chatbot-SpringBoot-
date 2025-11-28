@@ -10,6 +10,13 @@ const Chatbot = () => {
     const [loading, setLoading] = useState(false)
     const [authUser, setAuthUser] = useState(null);
     const navigate = useNavigate();
+    const suggestions = [
+        "What is AI?",
+        "How does machine learning work?",
+        "What are the applications of deep learning?",
+        "Explain natural language processing.",
+        "What is computer vision?"
+    ];
 
     // Load logged-in user on component mount
     useEffect(() => {
@@ -38,13 +45,15 @@ const Chatbot = () => {
         }
     };
 
-    const handleSend = async () => {
+    const handleSend = async (messageText) => {
+        // determine to send suggestions or input field
+        const messageToSend= typeof messageText === 'string' ? messageText : input;
+        
         // empty input => send nothing
-        if (input.trim() === "") return;
+        if (messageToSend.trim() === "") return;
 
-        const newMessage = { id: Date.now(), text: input, sender: 'user' };
+        const newMessage = { id: Date.now(), text: messageToSend, sender: 'user' };
         setMessages(prev => [...prev, newMessage]);
-        const messageToSend = input;
 
         setInput(''); // clear input field
         setLoading(true);
@@ -83,8 +92,7 @@ const Chatbot = () => {
                 <img src="/images/logo.png" alt="Chatbot Logo" className="chat-logo" />
                 <div className="breadcrumb">CHATBOT</div>
 
-                <button 
-                    onClick={handleLogout} 
+                <button onClick={handleLogout} 
                     style={{
                         backgroundColor: '#ff4d4d', 
                         width: 'auto', 
@@ -98,8 +106,36 @@ const Chatbot = () => {
                     <FaSignOutAlt/> Logout
                 </button>
             </div>
-
+            
             <div className="chatbox">
+                {/* show suggestions only if no chat history found */}
+                <div className="suggestions-container">
+                    <div className="message-container ai" style={{ marginBottom: '20px' }}>
+                        <img 
+                            src="/images/chatbot.jpg" 
+                            alt="AI avatar" 
+                            className="avatar" 
+                        />
+                        <div className="message ai">
+                            Hello im your personal AI asistant.<br/>
+                            How can I help you today ?
+                        </div>
+                    </div>
+
+                    <div className="suggestions-grid">
+                        {suggestions.map((suggestion) => (
+                            <button 
+                                key={suggestion}
+                                className="suggestion-chip"
+                                onClick={() => handleSend(suggestion)}
+                            >
+                                {suggestion}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* if chat history found then show it instead of suggestions */}
                 {messages.map((message) => (
                     <div key={message.id} className={`message-container ${message.sender === 'user' ? 'user' : 'ai'}`}>
                         <img
@@ -119,6 +155,7 @@ const Chatbot = () => {
                     </div>
                 )}
             </div>
+            
             <div className="input-container">
                 <input
                     type="text"
@@ -126,12 +163,12 @@ const Chatbot = () => {
                     onChange={handleInputChange}
                     onKeyDown={handleKeyPress}
                     placeholder="Type your message..."
+                    className="chat-input-field"
                 />
-                <button onClick={handleSend}>
+                <button onClick={handleSend} className='send-button'>
                     <FaPaperPlane />
                 </button>
             </div>
-
         
         </div>
     );
