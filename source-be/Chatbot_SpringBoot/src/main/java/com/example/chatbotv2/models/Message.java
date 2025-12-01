@@ -13,11 +13,7 @@ public class Message {
     private Long messageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "conversationId", nullable = false)
-    private Conversation conversation;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "sender", nullable = false)
@@ -31,8 +27,7 @@ public class Message {
 
     public Message() {}
 
-    public Message(Conversation conversation, User user, String sender, String messageText) {
-        this.conversation = conversation;
+    public Message(User user, String sender, String messageText) {
         this.user = user;
         this.sender=sender;
         this.messageText = messageText;
@@ -41,9 +36,6 @@ public class Message {
 
     public Long getMessageId() { return messageId; }
     public void setMessageId(Long messageId) { this.messageId = messageId; }
-
-    public Conversation getConversation() { return conversation; }
-    public void setConversation(Conversation conversation) { this.conversation = conversation; }
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user=user; }

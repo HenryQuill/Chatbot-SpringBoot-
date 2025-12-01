@@ -46,7 +46,7 @@ const Chatbot = () => {
     };
 
     const handleSend = async (messageText) => {
-        // determine to send suggestions or input field
+        // send suggestions or input field
         const messageToSend= typeof messageText === 'string' ? messageText : input;
         
         // empty input => send nothing
@@ -108,7 +108,7 @@ const Chatbot = () => {
             </div>
             
             <div className="chatbox">
-                {/* show suggestions only if no chat history found */}
+                {/* show suggestions if no chat history found */}
                 <div className="suggestions-container">
                     <div className="message-container ai" style={{ marginBottom: '20px' }}>
                         <img 

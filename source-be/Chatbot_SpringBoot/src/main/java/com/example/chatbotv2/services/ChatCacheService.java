@@ -3,6 +3,7 @@ package com.example.chatbotv2.services;
 import com.example.chatbotv2.dto.CacheMessageDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -14,6 +15,10 @@ import java.util.concurrent.TimeUnit;
 public class ChatCacheService {
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;
+
+    // cache time-to-live (minutes)
+    @Value("${spring.cache.redis.time-to-live}")
+    private long ttlRedis;
 
     public ChatCacheService(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
@@ -39,7 +44,7 @@ public class ChatCacheService {
             redisTemplate.opsForList().trim(getRedisKey(userId), -50, -1);
 
             // expiration time
-            redisTemplate.expire(getRedisKey(userId), 7, TimeUnit.DAYS);
+            redisTemplate.expire(getRedisKey(userId), ttlRedis, TimeUnit.MINUTES);
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Error serializing chat message", e);
         }

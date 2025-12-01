@@ -35,7 +35,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Conversation> conversations = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 
     public User() {}
 
@@ -83,8 +83,6 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
-    public List<Conversation> getConversations() {return conversations;}
-
-    public void setConversations(List<Conversation> conversations) {this.conversations = conversations;}
+    public List<Message> getMessages() { return messages; }
+    public void setMessages(List<Message> messages) { this.messages = messages; }
 }
