@@ -5,7 +5,11 @@ import com.example.chatbotv2.models.Message;
 import com.example.chatbotv2.models.User;
 import com.example.chatbotv2.repositories.MessageRepository;
 import com.example.chatbotv2.repositories.UserRepository;
+
 import org.springframework.ai.chat.client.ChatClient;
+
+
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +21,7 @@ public class ChatService {
     private final ChatClient chatClient;
     private final ChatCacheService chatCacheService;
 
+
     public ChatService(ChatClient chatClient,
                        MessageRepository messageRepo,
                        UserRepository userRepo,
@@ -26,6 +31,7 @@ public class ChatService {
         this.chatClient = chatClient;
         this.chatCacheService=chatCacheService;
     }
+
     public String botResponseMessage(String userInput) {
         return chatClient.prompt(userInput).call().content();
     }
@@ -36,7 +42,6 @@ public class ChatService {
 
         // create and save user messages
         Message userMessage = new Message(user, "user", userInput);
-
         messageRepo.save(userMessage);
         chatCacheService.addMessage(userId,"user",userInput);
 
@@ -61,10 +66,9 @@ public class ChatService {
         List<Message> dbMessages = messageRepo.findByUser_UseridOrderByCreatedAtAsc(userId);
         return dbMessages.stream()
                 .map(msg -> new CacheMessageDTO(
-                        msg.getMessageId(), // Dùng tạm ID làm timestamp hoặc convert createdAt
+                        msg.getMessageId(),
                         msg.getMessageText(),
                         msg.getSender()
-                ))
-                .toList();
+                )).toList();
     }
 }
